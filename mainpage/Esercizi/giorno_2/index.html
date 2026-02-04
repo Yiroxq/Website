@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ritratto digitale</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: dimgray;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
+</head>
+<body>
+<script>
+
+let faccione;
+
+function preload() {
+    faccione = loadImage("IMG_0645.png");
+}
+
+function setup() {
+    createCanvas(windowWidth, windowHeight);
+
+    // ridimensiono l'immagine in modo proporzionato
+    faccione.resize(faccione.width / 7, faccione.height / 7);
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
+
+function draw() {
+    background(0);
+    noStroke();
+
+    let numH = faccione.width;
+    let numV = faccione.height;
+    let d = 8;
+
+    // CENTRATURA PERFETTA
+    let ox = (width - (numH - 1) * d) / 2;
+    let oy = (height - (numV - 1) * d) / 2;
+
+    let nz = frameCount * 0.02;
+    let nx = frameCount * 0.03;
+    let ny = frameCount * 0.025;
+
+    for (let j = 0; j < numV; j++) {
+        for (let i = 0; i < numH; i++) {
+
+            let c = faccione.get(i, j);
+            let gray = (red(c) + green(c) + blue(c)) / 3;
+            let bw = gray > 120 ? 255 : 0;
+            fill(bw);
+
+            let px = ox + i * d;
+            let py = oy + j * d;
+
+            let distMouse = dist(mouseX, mouseY, px, py);
+            let attraction = map(distMouse, 0, 300, 25, 0, true);
+            let angle = atan2(mouseY - py, mouseX - px);
+
+            let pullX = cos(angle) * attraction;
+            let pullY = sin(angle) * attraction;
+
+            let deform = map(
+                noise(i * 0.03 + nx, j * 0.03 + ny, nz),
+                0, 1,
+                -5,
+                5
+            );
+
+            let finalX = px + pullX + deform;
+            let finalY = py + pullY + deform;
+
+            circle(finalX, finalY, 12);
+        }
+    }
+}
+
+</script>
+</body>
+</html>

@@ -19,6 +19,37 @@
       font-size: 14px;
     }
 
+    /* TEXTURE (paper-like) */
+    .texture {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      opacity: 0.06;
+      background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+      background-size: 600px;
+    }
+
+    /* GRAIN EFFECT (fine film grain) */
+    .grain {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      opacity: 0.18;
+      background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAArUlEQVR4Ae3XMQ6CMBRF0b8pRgxNbxE6CkXbkqVKgf/mBlC9ZwTe74MkRUYw35vj0IadJ1iKsFcEYJIyaKOAAVGNVuMcZV8C4D4ew3Efr2E1VlzDqgW8sELpAo0P5NdQ4KJIp4jOSAmhpBREUiSYgkZISGDGSCSYgkZISGDGSCSYgkZISGDGSCSYgkZISGDGSCSYgkZISGDGSCSYgkZISGDGSCSYgkZISGDGSCSYgkZISGDGSCf4B7xToYtL6vhfAAAAAElFTkSuQmCC");
+      animation: grainMove 1.2s steps(6) infinite;
+    }
+
+    @keyframes grainMove {
+      0% { transform: translate(0,0); }
+      20% { transform: translate(-10px, 5px); }
+      40% { transform: translate(8px, -12px); }
+      60% { transform: translate(-6px, 8px); }
+      80% { transform: translate(4px, -6px); }
+      100% { transform: translate(0,0); }
+    }
+
     p, a, li, nav, .project-link {
       font-size: 14px;
       line-height: 1.5;
@@ -202,6 +233,10 @@
 
 <body>
 
+  <!-- TEXTURE + GRAIN -->
+  <div class="texture"></div>
+  <div class="grain"></div>
+
   <script>
     const trailSize = 6;
     const blobs = [];
@@ -246,23 +281,20 @@
     <div><a href="#about">alessandro blazquez</a></div>
     <div><a href="https://www.instagram.com/ileg_ale/" target="_blank">instagram</a></div>
     <div>
-  <a href="https://www.supsi.ch/en/bachelor-visual-communication" target="_blank">
-    Visual Communication
-  </a>
-</div>
-
+      <a href="https://www.supsi.ch/en/bachelor-visual-communication" target="_blank">
+        Visual Comunication
+      </a>
+    </div>
   </header>
 
   <h1 class="title-main fade-in" id="title">
     <span>S</span><span>H</span><span>O</span><span>W</span><span>C</span><span>A</span><span>S</span><span>E</span>
   </h1>
 
-  <!-- ABOUT SECTION CORRETTA -->
   <section id="about" class="about-section reveal">
     <h2>About this page</h2>
 
     <div class="about-wrapper">
-
       <p>
         My name is Alessandro Blazquez and I am studying visual communication. <br>
         This website was born during a seminar at SUPSI. <br>
@@ -273,7 +305,6 @@
       <a href="mainpage/img/ritratt.jpg" target="_blank">
         <img src="mainpage/img/ritratt.jpg" class="about-image">
       </a>
-
     </div>
   </section>
 
@@ -298,8 +329,8 @@
       </h3>
 
       <h3 class="project-title">
-  <a href="mainpage/Esercizi/giorno_6/index.html" class="project-link">Hiden CV</a>
-</h3>
+        <a href="mainpage/Esercizi/giorno_6/index.html" class="project-link">Hidden CV</a>
+      </h3>
 
     </nav>
   </section>

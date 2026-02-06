@@ -10,7 +10,7 @@
     body {
       margin: 0;
       padding: 0;
-      background: #000;
+      background: #ff0000;
       color: #fff;
       font-family: Helvetica, Arial, sans-serif;
       overflow-x: hidden;
@@ -19,7 +19,7 @@
       font-size: 14px;
     }
 
-    /* TEXTURE (paper-like) */
+    
     .texture {
       pointer-events: none;
       position: fixed;
@@ -30,15 +30,15 @@
       background-size: 600px;
     }
 
-    /* GRAIN EFFECT (fine film grain) */
+   
     .grain {
       pointer-events: none;
       position: fixed;
       inset: 0;
       z-index: -2;
-      opacity: 0.18;
-      background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAArUlEQVR4Ae3XMQ6CMBRF0b8pRgxNbxE6CkXbkqVKgf/mBlC9ZwTe74MkRUYw35vj0IadJ1iKsFcEYJIyaKOAAVGNVuMcZV8C4D4ew3Efr2E1VlzDqgW8sELpAo0P5NdQ4KJIp4jOSAmhpBREUiSYgkZISGDGSCSYgkZISGDGSCSYgkZISGDGSCSYgkZISGDGSCSYgkZISGDGSCSYgkZISGDGSCSYgkZISGDGSCSYgkZISGDGSCf4B7xToYtL6vhfAAAAAElFTkSuQmCC");
-      animation: grainMove 1.2s steps(6) infinite;
+      opacity: 0.00;
+      background-image: url("https://images.unsplash.com/photo-1602475063211-3d98d60e3b1f?q=80&w=2757&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+      animation: grainMove 0s steps(6) infinite;
     }
 
     @keyframes grainMove {
@@ -59,11 +59,11 @@
       position: fixed;
       top: 0;
       left: 0;
-      width: 200px;
-      height: 200px;
-      background: radial-gradient(circle, rgba(230,230,230,0.55), rgba(150,150,150,0.25), rgba(80,80,80,0.10), transparent);
-      border-radius: 50%;
-      filter: blur(70px);
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1), transparent);
+      border-radius: 1%;
+      filter: blur(30px);
       pointer-events: none;
       transform: translate(-50%, -50%);
       z-index: -1;
@@ -111,7 +111,7 @@
       font-weight: bold;
       letter-spacing: 6px;
       user-select: none;
-      transition: font-family 0.4s ease;
+      transition: font-family 0.2s ease;
       position: absolute;
       top: 320px;
       height: 150px;
@@ -228,10 +228,30 @@
     }
 
     .project-link:hover { text-shadow: 0 0 20px white; }
+
+    body {
+  cursor: none;
+}
+
+.cursor-dot {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  mix-blend-mode: difference; 
+}
+
   </style>
 </head>
 
 <body>
+
+  <div class="cursor-dot"></div>
+
 
   <!-- TEXTURE + GRAIN -->
   <div class="texture"></div>
@@ -282,7 +302,7 @@
     <div><a href="https://www.instagram.com/ileg_ale/" target="_blank">instagram</a></div>
     <div>
       <a href="https://www.supsi.ch/en/bachelor-visual-communication" target="_blank">
-        Visual Comunication
+        Visual Communication
       </a>
     </div>
   </header>
@@ -296,10 +316,10 @@
 
     <div class="about-wrapper">
       <p>
-        My name is Alessandro Blazquez and I am studying Visual Communication. <br>
-        This website was created during a seminar at SUPSI. <br>
-        Here I experimented with coding, trying out different exercises and ideas that came to mind.<br>
-The main goal of this website is simply to explore, play, and have fun.
+        My name is Alessandro Blazquez and I am studying visual communication. <br>
+        This website was born during a seminar at SUPSI. <br>
+        Here I experimented with coding, <br>trying different exercises and ideas that came to my mind.  
+        <br>The main goal of this website is simply to have fun.
       </p>
 
       <a href="mainpage/img/ritratt.jpg" target="_blank">
@@ -419,6 +439,16 @@ The main goal of this website is simply to explore, play, and have fun.
     }
 
     moveTitle();
+
+    
+const cursorDot = document.querySelector(".cursor-dot");
+
+document.addEventListener("mousemove", (e) => {
+  cursorDot.style.left = e.clientX + "px";
+  cursorDot.style.top = e.clientY + "px";
+});
+
+
   </script>
 
 </body>

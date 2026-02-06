@@ -24,7 +24,6 @@
       line-height: 1.5;
     }
 
-    
     .blob {
       position: fixed;
       top: 0;
@@ -76,7 +75,6 @@
 
     header a:hover { text-shadow: 0 0 10px white; }
 
-    
     .title-main {
       font-size: 120px;
       font-weight: bold;
@@ -98,14 +96,12 @@
       transition: transform 0.25s ease;
     }
 
-    
     .title-main:hover {
       transform: scale(1.08);
       text-shadow: 0 0 18px white;
       transition: transform 0.25s ease, text-shadow 0.25s ease;
     }
 
-    
     .about-section {
       margin-top: 900px;
       padding: 0 40px 120px;
@@ -128,7 +124,6 @@
       text-align: left;
     }
 
-    
     .about-wrapper {
       display: flex;
       align-items: flex-start;
@@ -156,7 +151,6 @@
       opacity: 1;
     }
 
-    
     .projects-section {
       margin-top: 120px;
       padding: 0 40px 200px;
@@ -208,7 +202,6 @@
 
 <body>
 
-  
   <script>
     const trailSize = 6;
     const blobs = [];
@@ -252,52 +245,66 @@
   <header class="fade-in">
     <div><a href="#about">alessandro blazquez</a></div>
     <div><a href="https://www.instagram.com/ileg_ale/" target="_blank">instagram</a></div>
-    <div>comunicazione visiva</div>
+    <div>
+  <a href="https://www.supsi.ch/en/bachelor-visual-communication" target="_blank">
+    Visual Communication
+  </a>
+</div>
+
   </header>
 
-  
   <h1 class="title-main fade-in" id="title">
     <span>S</span><span>H</span><span>O</span><span>W</span><span>C</span><span>A</span><span>S</span><span>E</span>
   </h1>
 
-  
+  <!-- ABOUT SECTION CORRETTA -->
   <section id="about" class="about-section reveal">
-    <h2>About Me</h2>
+    <h2>About this page</h2>
 
     <div class="about-wrapper">
+
       <p>
-        Mi chiamo Alessandro e sono uno studente di comunicazione visiva. Il design mi appassiona tantissimo in tutte le sue forme, in questo portfolio potete trovare una raccolta di progetti sviluppati nel mio primo approccio con la programmazione.
+        My name is Alessandro Blazquez and I am studying visual communication. <br>
+        This website was born during a seminar at SUPSI. <br>
+        Here I experimented with coding, <br>trying different exercises and ideas that came to my mind.  
+        <br>The main goal of this website is simply to have fun.
       </p>
 
       <a href="mainpage/img/ritratt.jpg" target="_blank">
         <img src="mainpage/img/ritratt.jpg" class="about-image">
       </a>
+
     </div>
   </section>
 
- 
   <section class="projects-section reveal">
-    <h2>Esercizi</h2>
+    <h2>Projects</h2>
 
     <nav id="nav">
       <h3 class="project-title">
-        <a href="https://yiroxq.github.io/Website/mainpage/Esercizi/giorno_2/" class="project-link">Ritratto digitale</a>
+        <a href="https://yiroxq.github.io/Website/mainpage/Esercizi/giorno_2/" class="project-link">coding myself</a>
       </h3>
 
       <h3 class="project-title">
-      <a href="https://yiroxq.github.io/Website/mainpage/Esercizi/giorno_3/" class="project-link">Tipografia animata</a>
+        <a href="https://yiroxq.github.io/Website/mainpage/Esercizi/giorno_3/" class="project-link">TyPEeeeeee!</a>
       </h3>
 
       <h3 class="project-title">
-      <a href="mainpage/Esercizi/giorno_4/index.html" class="project-link">Testo personalizzato(brat)</a>
+        <a href="mainpage/Esercizi/giorno_4/index.html" class="project-link">DO your brat</a>
       </h3>
 
-      <h3 class="project-title">Progetti interattivi</h3>
+      <h3 class="project-title">
+        <a href="mainpage/Esercizi/giorno_5/index.html" class="project-link">What is that melody</a>
+      </h3>
+
+      <h3 class="project-title">
+  <a href="mainpage/Esercizi/giorno_6/index.html" class="project-link">Hiden CV</a>
+</h3>
+
     </nav>
   </section>
 
   <script>
-    /* FADE-IN */
     const aboutSection = document.querySelector('.about-section');
     const projectsSection = document.querySelector('.projects-section');
 
@@ -312,7 +319,6 @@
     window.addEventListener('scroll', revealOnScroll);
     revealOnScroll();
 
-    /* CAMBIO FONT */
     const title = document.getElementById("title");
 
     let fonts = [
@@ -337,7 +343,6 @@
       title.style.fontFamily = pickFont();
     }, 1200);
 
-    /* MOVIMENTO AUTOMATICO DEL TITOLO */
     let posX = window.innerWidth / 2;
     let posY = 350;
     let velX = 3.2;

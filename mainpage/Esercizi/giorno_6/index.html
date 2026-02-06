@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Parole nascoste</title>
+
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    overflow: hidden;
+    font-family: system-ui, sans-serif;
+  }
+
+  .scene {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: black;
+    color: white;
+  }
+
+  /* Parole più grandi */
+  .word {
+    position: absolute;
+    font-size: 26px; /* più grandi */
+    font-weight: 700;
+    text-transform: uppercase;
+    opacity: 0.9;
+    pointer-events: none;
+    letter-spacing: 2px;
+    white-space: nowrap;
+  }
+
+  /* Torcia piccola */
+  .dark-mask {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+    background: radial-gradient(circle at 50% 50%, transparent 40px, rgba(0,0,0,0.98) 120px);
+    transition: background 0.05s linear;
+  }
+
+  .hint {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #777;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    pointer-events: none;
+    z-index: 20;
+  }
+</style>
+</head>
+<body>
+
+<div class="scene" id="scene"></div>
+
+<div class="dark-mask" id="darkMask"></div>
+<div class="hint">USE THE MOUSE TO GET TO KNOW MY WORK AND ME</div>
+
+<script>
+const words = [
+  "ALESSANDRO", "2006", "SPANISH", "ENGLISH", "ITALIAN",
+  "SOCIABLE", "CREATIVE", "GRAPHIC DESIGN", "VIDEO", "WEBSITE",
+  "PHOTOGRAPHY", "EASYGOING", "BLAZQUEZ", "SUPSI", "VISUAL COMUNICATION",
+  "RELIABLE", "FRIENDLY", "ADOBE", "FIGMA"
+];
+
+const scene = document.getElementById("scene");
+const placedWords = [];
+
+/* Funzione per controllare sovrapposizioni */
+function overlaps(x, y, width, height) {
+  for (const w of placedWords) {
+    const buffer = 40; // distanza minima tra parole
+    if (
+      x < w.x + w.width + buffer &&
+      x + width + buffer > w.x &&
+      y < w.y + w.height + buffer &&
+      y + height + buffer > w.y
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/* Posiziona le parole senza sovrapposizioni */
+words.forEach(text => {
+  const span = document.createElement("span");
+  span.className = "word";
+  span.textContent = text;
+  scene.appendChild(span);
+
+  const rect = span.getBoundingClientRect();
+  const w = rect.width;
+  const h = rect.height;
+
+  let x, y;
+  let tries = 0;
+
+  do {
+    x = Math.random() * (window.innerWidth - w - 20);
+    y = Math.random() * (window.innerHeight - h - 20);
+    tries++;
+    if (tries > 500) break; // evita loop infinito
+  } while (overlaps(x, y, w, h));
+
+  span.style.left = x + "px";
+  span.style.top = y + "px";
+
+  placedWords.push({ x, y, width: w, height: h });
+});
+
+/* Torcia piccola */
+const darkMask = document.getElementById("darkMask");
+
+document.addEventListener("mousemove", (e) => {
+  const x = e.clientX;
+  const y = e.clientY;
+
+  darkMask.style.background = `
+    radial-gradient(circle at ${x}px ${y}px,
+      transparent 40px,
+      rgba(0,0,0,0.98) 120px)
+  `;
+});
+
+/* Torcia al centro all'inizio */
+window.addEventListener("load", () => {
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+
+  darkMask.style.background = `
+    radial-gradient(circle at ${cx}px ${cy}px,
+      transparent 40px,
+      rgba(0,0,0,0.98) 120px)
+  `;
+});
+</script>
+
+</body>
+</html>

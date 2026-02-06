@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Showcase Musicale</title>
+
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+  }
+
+  /* SCRITTA CENTRALE CON CAMBIO FONT */
+  #center-title {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 70px;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: white;
+    letter-spacing: 4px;
+    text-align: center;
+    pointer-events: none;
+    z-index: 1000;
+    text-shadow: 0 0 25px rgba(0,0,0,0.9);
+    animation: changeFont 4s infinite ease-in-out;
+  }
+
+  @keyframes changeFont {
+    0%   { font-family: Arial, sans-serif; }
+    20%  { font-family: "Courier New", monospace; }
+    40%  { font-family: Georgia, serif; }
+    60%  { font-family: Impact, sans-serif; }
+    80%  { font-family: "Trebuchet MS", sans-serif; }
+    100% { font-family: Arial, sans-serif; }
+  }
+
+  /* BLOB */
+  .blob {
+    position: fixed;
+    width: 260px;
+    height: 260px;
+    background: radial-gradient(circle at center, rgba(180,180,180,0.8), transparent 70%);
+    filter: blur(80px);
+    opacity: 0.45;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: transform 0.08s ease-out;
+    z-index: 0;
+  }
+
+  .scene {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* sotto il testo, sopra lo sfondo */
+  }
+
+  .card {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: grab;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    transform-style: preserve-3d;
+    z-index: 5;
+  }
+
+  .card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    display: block;
+  }
+
+  .card:hover {
+    transform: scale(1.15) rotateX(8deg) rotateY(8deg);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  }
+
+  .info-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+  }
+
+  .info-box {
+    background: #111;
+    padding: 24px 28px;
+    border-radius: 14px;
+    max-width: 420px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+  }
+
+  .info-cover {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 18px;
+    display: block;
+  }
+
+  .info-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .info-artist {
+    font-size: 16px;
+    margin-bottom: 6px;
+    color: #ccc;
+  }
+
+  .info-date {
+    font-size: 14px;
+    margin-bottom: 18px;
+    color: #888;
+  }
+
+  .info-close {
+    border: none;
+    background: #ffffff;
+    color: #000000;
+    padding: 8px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<!-- SCRITTA CENTRALE -->
+<div id="center-title">MY MUSIC ROTATION</div>
+
+<div class="blob" id="blob"></div>
+<div class="scene" id="scene"></div>
+
+<!-- POPUP -->
+<div class="info-overlay" id="infoOverlay">
+  <div class="info-box">
+    <img id="infoCover" class="info-cover">
+    <div class="info-title" id="infoTitle"></div>
+    <div class="info-artist" id="infoArtist"></div>
+    <div class="info-date" id="infoDate"></div>
+    <button class="info-close" id="infoClose">close</button>
+  </div>
+</div>
+
+<script>
+/* TRACCE */
+const tracks = [
+  { img: "scarlet.jpeg", title: "Scarlet 2 Claude", artist: "Doja Cat", date: "2024", album: "scarlet.jpeg" },
+  { img: "brat.jpeg", title: "Brat", artist: "Charlie xcx", date: "2024", album: "brat.jpeg" },
+  { img: "mbf.jpeg", title: "Man's best friend", artist: "Sabrina Carpenter", date: "2025", album: "mbf.jpeg" },
+  { img: "fancythat.jpeg", title: "Fancy That", artist: "PinkPantheress", date: "2025", album: "fancythat.jpeg" },
+  { img: "vie.jpeg", title: "Vie", artist: "Doja Cat", date: "2025", album: "vie.jpeg" },
+  { img: "LUX.jpeg", title: "LUX", artist: "ROSALIA", date: "2025", album: "LUX.jpeg" },
+  { img: "oil.jpeg", title: "Oil of every Pearl's Un-insides", artist: "SOPHIE", date: "2017", album: "oil.jpeg" },
+  { img: "disk.jpeg", title: "Imaginal Disk", artist: "Magdalena Bay", date: "2024", album: "disk.jpeg" },
+  { img: "sub.jpeg", title: "Submarine", artist: "The Marias", date: "2021", album: "sub.jpeg" },
+  { img: "megan.jpeg", title: "Megan", artist: "Megan Thee Stallion", date: "2024", album: "megan.jpeg" }
+];
+
+const scene = document.getElementById("scene");
+const blob = document.getElementById("blob");
+const overlay = document.getElementById("infoOverlay");
+const infoCover = document.getElementById("infoCover");
+const infoTitle = document.getElementById("infoTitle");
+const infoArtist = document.getElementById("infoArtist");
+const infoDate = document.getElementById("infoDate");
+const infoClose = document.getElementById("infoClose");
+
+const cards = [];
+const offsets = [];
+
+/* CREA LE CARD */
+tracks.forEach((track, i) => {
+  const card = document.createElement("div");
+  card.className = "card";
+
+  const img = document.createElement("img");
+  img.src = track.img;
+  card.appendChild(img);
+
+  const x = Math.random() * (window.innerWidth - 200);
+  const y = Math.random() * (window.innerHeight - 200);
+  card.style.left = x + "px";
+  card.style.top = y + "px";
+
+  offsets[i] = { baseX: x, baseY: y, t: Math.random() * 1000 };
+
+  let dragging = false;
+  let moved = false;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  card.addEventListener("mousedown", e => {
+    dragging = true;
+    moved = false;
+    offsetX = e.clientX - card.offsetLeft;
+    offsetY = e.clientY - card.offsetTop;
+    card.style.transition = "none";
+  });
+
+  document.addEventListener("mousemove", e => {
+    if (dragging) {
+      moved = true;
+      const newX = e.clientX - offsetX;
+      const newY = e.clientY - offsetY;
+      card.style.left = newX + "px";
+      card.style.top = newY + "px";
+      offsets[i].baseX = newX;
+      offsets[i].baseY = newY;
+    }
+  });
+
+  document.addEventListener("mouseup", () => {
+    if (dragging && !moved) {
+      infoCover.src = track.album;
+      infoTitle.textContent = track.title;
+      infoArtist.textContent = track.artist;
+      infoDate.textContent = track.date;
+      overlay.style.display = "flex";
+    }
+    dragging = false;
+    card.style.transition = "transform 0.25s ease, box-shadow 0.25s ease";
+  });
+
+  scene.appendChild(card);
+  cards.push(card);
+});
+
+/* CHIUSURA POPUP */
+infoClose.addEventListener("click", () => overlay.style.display = "none");
+overlay.addEventListener("click", e => {
+  if (e.target === overlay) overlay.style.display = "none";
+});
+
+/* BLOB SEGUE IL MOUSE */
+document.addEventListener("mousemove", e => {
+  blob.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+});
+
+/* MOVIMENTO LEGGERO DELLE CARD */
+function animate() {
+  cards.forEach((card, i) => {
+    const o = offsets[i];
+    o.t += 0.01;
+
+    const dx = Math.sin(o.t) * 6;
+    const dy = Math.cos(o.t * 0.8) * 6;
+
+    card.style.left = (o.baseX + dx) + "px";
+    card.style.top = (o.baseY + dy) + "px";
+  });
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+</body>
+</html>
